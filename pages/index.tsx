@@ -40,7 +40,7 @@ const Home: NextPage<Props> = ({ apiUrl, frontedURL }) => {
 
   useEffect(() => {
     if (searchTerm.length > 0) {
-      fetch(`${apiUrl}/api/search/guide/${searchTerm}`, {
+      fetch(`${apiUrl}api/search/guide/${searchTerm}`, {
         headers: {
           'Access-Control-Allow-Origin': frontedURL,
           'Content-Type': 'application/json',
