@@ -1,0 +1,97 @@
+.container {
+  margin: 0 auto;
+  display: block;
+  width: 100%;
+  max-width: 30rem;
+  height: 50vh;
+}
+
+.main {
+  min-height: 100vh;
+  padding: 4rem 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.searchBar {
+  width: 100%;
+  height: 100%;
+  max-width: 24rem;
+  min-height: 2rem;
+  font-size: 18px;
+  margin: 0.25rem 0 0.25rem 0.5rem;
+  border: 0;
+  appearance: none;
+  position: sticky;
+}
+
+.searchBar:focus {
+  outline: none !important;
+}
+
+.searchContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  height: auto;
+  max-height: 2.5rem;
+  width: 100%;
+  border-radius: 1.5rem;
+  border: 1px solid #dfe1e5;
+  padding: 0.2rem 1rem;
+  max-width: 30rem;
+}
+
+.searchContainerWithResults {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  height: auto;
+  max-height: 2.5rem;
+  width: 100%;
+  border-radius: 1.5rem 1.5rem 0 0;
+  border: 1px solid #dfe1e5;
+  padding: 0.2rem 1rem;
+  max-width: 30rem;
+}
+
+.resultCard {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 22rem;
+  margin: 0.75rem;
+  padding: 0.25rem;
+}
+
+.resultsContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  height: auto;
+  width: 100%;
+  max-width: 30rem;
+  border-radius: 0 0 1.5rem 1.5rem;
+  border: 1px solid #dfe1e5;
+  padding: 0.5rem 1rem;
+}
+
+.resultType {
+  color: #72767df9;
+  margin: 0 0.25rem 0 0;
+}
+
+.flexRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
