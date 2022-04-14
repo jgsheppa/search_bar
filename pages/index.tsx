@@ -25,18 +25,21 @@ type SearchResult = {
   suggestions: Suggestion[];
 };
 
-const Home: NextPage = () => {
+type Props = {
+  apiUrl: string;
+};
+
+const Home: NextPage<Props> = ({ apiUrl }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<SearchResult>({
     total: 0,
     response: [],
     suggestions: [],
   });
-  console.log('searchResults', searchResults);
 
   useEffect(() => {
     if (searchTerm.length > 0) {
-      fetch(`http://localhost:3001/api/search/guide/${searchTerm}`, {
+      fetch(`${apiUrl}/api/search/guide/${searchTerm}`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json',
@@ -46,7 +49,7 @@ const Home: NextPage = () => {
         .then((data) => setSearchResults(data))
         .catch((err) => console.log(err));
     }
-  }, [searchTerm]);
+  }, [apiUrl, searchTerm]);
 
   return (
     <div>
@@ -107,5 +110,12 @@ const Home: NextPage = () => {
     </div>
   );
 };
+
+export async function getStaticProps() {
+  const apiUrl = process.env.API_URL;
+  return {
+    props: { apiUrl }, // will be passed to the page component as props
+  };
+}
 
 export default Home;
