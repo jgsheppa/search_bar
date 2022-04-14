@@ -27,9 +27,10 @@ type SearchResult = {
 
 type Props = {
   apiUrl: string;
+  frontedURL: string;
 };
 
-const Home: NextPage<Props> = ({ apiUrl }) => {
+const Home: NextPage<Props> = ({ apiUrl, frontedURL }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<SearchResult>({
     total: 0,
@@ -41,7 +42,7 @@ const Home: NextPage<Props> = ({ apiUrl }) => {
     if (searchTerm.length > 0) {
       fetch(`${apiUrl}/api/search/guide/${searchTerm}`, {
         headers: {
-          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Origin': frontedURL,
           'Content-Type': 'application/json',
         },
       })
@@ -49,7 +50,7 @@ const Home: NextPage<Props> = ({ apiUrl }) => {
         .then((data) => setSearchResults(data))
         .catch((err) => console.log(err));
     }
-  }, [apiUrl, searchTerm]);
+  }, [apiUrl, frontedURL, searchTerm]);
 
   return (
     <div>
@@ -113,8 +114,9 @@ const Home: NextPage<Props> = ({ apiUrl }) => {
 
 export async function getStaticProps() {
   const apiUrl = process.env.API_URL;
+  const frontedURL = process.env.FE_URL;
   return {
-    props: { apiUrl }, // will be passed to the page component as props
+    props: { apiUrl, frontedURL }, // will be passed to the page component as props
   };
 }
 
