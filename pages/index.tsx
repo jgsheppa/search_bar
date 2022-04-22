@@ -6,10 +6,14 @@ import styles from '../styles/Search.module.css';
 import parse from 'html-react-parser';
 
 type Response = {
-  text: string;
-  date: string;
-  topic: string;
-  url: string;
+  Id: string;
+  Score: number;
+  Payload: null;
+  Properties: {
+    name: string;
+    link: string;
+    active: string;
+  };
 };
 
 type Suggestion = {
@@ -30,25 +34,30 @@ type Props = {
   frontedURL: string;
 };
 
+const initialResults = {
+  total: 0,
+  response: [],
+  suggestions: [],
+};
+
 const Home: NextPage<Props> = ({ apiUrl, frontedURL }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState<SearchResult>({
-    total: 0,
-    response: [],
-    suggestions: [],
-  });
+  const [searchResults, setSearchResults] =
+    useState<SearchResult>(initialResults);
 
   useEffect(() => {
     if (searchTerm.length > 0) {
-      fetch(`${apiUrl}api/search/guide/${searchTerm}`, {
+      fetch(`${apiUrl}/api/search/${searchTerm}`, {
         headers: {
-          'Access-Control-Allow-Origin': frontedURL,
+          'Access-Control-Allow-Origin': `${process.env.FE_URL}`,
           'Content-Type': 'application/json',
         },
       })
         .then((response) => response.json())
         .then((data) => setSearchResults(data))
         .catch((err) => console.log(err));
+    } else if (searchTerm.length === 0) {
+      setSearchResults(initialResults);
     }
   }, [apiUrl, frontedURL, searchTerm]);
 
@@ -83,24 +92,30 @@ const Home: NextPage<Props> = ({ apiUrl, frontedURL }) => {
           </div>
           {searchResults.response && searchResults.response.length > 0 && (
             <ul className={styles.resultsContainer}>
-              {searchResults.response.map((result: any, index: number) => (
-                <a
-                  key={index}
-                  target="_blank"
-                  href={result.url}
-                  className={styles.resultCard}
-                  rel="noreferrer"
-                >
-                  <li className={styles.flexRow}>
-                    <p className={styles.resultType}>Jump to: </p>{' '}
-                    {parse(result.text)}
-                  </li>
-                  <li className={styles.flexRow}>
-                    <p className={styles.resultType}>Term: </p>{' '}
-                    {parse(result.topic)}
-                  </li>
-                </a>
-              ))}
+              {searchResults.response
+                .slice(0, 5)
+                .map((result: Response, index: number) => {
+                  return (
+                    <a
+                      href={result.Properties.link}
+                      target="_blank"
+                      key={index}
+                      className={styles.resultCard}
+                      rel="noreferrer"
+                    >
+                      <li className={styles.flexRow}>
+                        <p className={styles.resultType}>
+                          {parse(result.Properties.name)}
+                        </p>
+                      </li>
+                      <li className={styles.flexRow}>
+                        <p className={styles.resultType}>
+                          {result.Properties.active}
+                        </p>
+                      </li>
+                    </a>
+                  );
+                })}
             </ul>
           )}
           {searchTerm.length > 0 && !searchResults.response && (
